@@ -1,0 +1,152 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+  moduleFormat = "cjs"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  ADMIN
+  MANAGER
+  EMPLOYEE
+}
+
+enum EmploymentStatus {
+  ACTIVE
+  INACTIVE
+}
+
+enum LeaveRequestStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  CANCELLED
+}
+
+enum ApprovalActionType {
+  CREATED
+  APPROVED
+  REJECTED
+  CANCELLED
+}
+
+model User {
+  id              String           @id @default(uuid()) @db.Uuid
+  email           String           @unique @db.VarChar(255)
+  passwordHash    String           @map("password_hash")
+  role            Role             @default(EMPLOYEE)
+  isActive        Boolean          @default(true) @map("is_active")
+  employeeProfile EmployeeProfile?
+
+  createdAt       DateTime         @default(now()) @map("created_at")
+  updatedAt       DateTime         @updatedAt @map("updated_at")
+
+  @@map("users")
+}
+
+model EmployeeProfile {
+  id             String             @id @default(uuid()) @db.Uuid
+  userId         String             @unique @map("user_id") @db.Uuid
+  employeeCode   String             @unique @map("employee_code") @db.VarChar(50)
+  firstName      String             @map("first_name") @db.VarChar(100)
+  lastName       String             @map("last_name") @db.VarChar(100)
+  position       String             @db.VarChar(100)
+  department     String             @db.VarChar(100)
+  hireDate       DateTime           @map("hire_date") @db.Date
+  status         EmploymentStatus   @default(ACTIVE)
+
+  managerId      String?            @map("manager_id") @db.Uuid
+  manager        EmployeeProfile?   @relation("EmployeeManager", fields: [managerId], references: [id])
+  teamMembers    EmployeeProfile[]  @relation("EmployeeManager")
+
+  user           User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  leaveBalances  LeaveBalance[]
+  leaveRequests  LeaveRequest[]     @relation("EmployeeLeaveRequests")
+  approvalActions ApprovalAction[]   @relation("ApproverActions")
+
+  createdAt      DateTime           @default(now()) @map("created_at")
+  updatedAt      DateTime           @updatedAt @map("updated_at")
+
+  @@map("employee_profiles")
+}
+
+model LeaveType {
+  id                 String          @id @default(uuid()) @db.Uuid
+  name               String          @unique @db.VarChar(100)
+  description        String?         @db.Text
+  defaultDaysPerYear Decimal         @default(0) @map("default_days_per_year") @db.Decimal(5, 2)
+  isPaid             Boolean         @default(true) @map("is_paid")
+  isActive           Boolean         @default(true) @map("is_active")
+
+  leaveBalances      LeaveBalance[]
+  leaveRequests      LeaveRequest[]
+
+  createdAt          DateTime        @default(now()) @map("created_at")
+  updatedAt          DateTime        @updatedAt @map("updated_at")
+
+  @@map("leave_types")
+}
+
+model LeaveBalance {
+  id                String           @id @default(uuid()) @db.Uuid
+  employeeProfileId String           @map("employee_profile_id") @db.Uuid
+  leaveTypeId       String           @map("leave_type_id") @db.Uuid
+  year              Int
+  totalDays         Decimal          @default(0) @map("total_days") @db.Decimal(5, 2)
+  usedDays          Decimal          @default(0) @map("used_days") @db.Decimal(5, 2)
+  remainingDays     Decimal          @default(0) @map("remaining_days") @db.Decimal(5, 2)
+
+  employeeProfile   EmployeeProfile  @relation(fields: [employeeProfileId], references: [id], onDelete: Cascade)
+  leaveType         LeaveType        @relation(fields: [leaveTypeId], references: [id], onDelete: Cascade)
+
+  createdAt         DateTime         @default(now()) @map("created_at")
+  updatedAt         DateTime         @updatedAt @map("updated_at")
+
+  @@unique([employeeProfileId, leaveTypeId, year])
+  @@map("leave_balances")
+}
+
+model LeaveRequest {
+  id                String              @id @default(uuid()) @db.Uuid
+  employeeProfileId String              @map("employee_profile_id") @db.Uuid
+  leaveTypeId       String              @map("leave_type_id") @db.Uuid
+  startDate         DateTime            @map("start_date") @db.Date
+  endDate           DateTime            @map("end_date") @db.Date
+  totalDays         Decimal             @map("total_days") @db.Decimal(5, 2)
+  reason            String?             @db.Text
+  status            LeaveRequestStatus  @default(PENDING)
+  managerNote       String?             @map("manager_note") @db.Text
+  requestedAt       DateTime            @default(now()) @map("requested_at")
+  decidedAt         DateTime?           @map("decided_at")
+
+  employeeProfile   EmployeeProfile     @relation("EmployeeLeaveRequests", fields: [employeeProfileId], references: [id], onDelete: Cascade)
+  leaveType         LeaveType           @relation(fields: [leaveTypeId], references: [id])
+  approvalActions   ApprovalAction[]
+
+  createdAt         DateTime            @default(now()) @map("created_at")
+  updatedAt         DateTime            @updatedAt @map("updated_at")
+
+  @@map("leave_requests")
+}
+
+model ApprovalAction {
+  id                String              @id @default(uuid()) @db.Uuid
+  leaveRequestId    String              @map("leave_request_id") @db.Uuid
+  approverProfileId String?             @map("approver_profile_id") @db.Uuid
+  action            ApprovalActionType
+  comment           String?             @db.Text
+  createdAt         DateTime            @default(now()) @map("created_at")
+
+  leaveRequest      LeaveRequest        @relation(fields: [leaveRequestId], references: [id], onDelete: Cascade)
+  approverProfile   EmployeeProfile?    @relation("ApproverActions", fields: [approverProfileId], references: [id])
+
+  @@map("approval_actions")
+}

@@ -9,4 +9,9 @@ export class HealthController {
   check() {
     return this.healthService.check();
   }
+
+  @Get('database')
+  checkDatabase() {
+    return this.healthService.checkDatabase();
+  }
 }
