@@ -28,6 +28,6 @@ type JwtSignOptions = NonNullable<JwtModuleOptions['signOptions']>;
   ],
   controllers: [AuthController],
   providers: [AuthService, AuthGuard, RolesGuard],
-  exports: [AuthGuard, RolesGuard],
+  exports: [JwtModule, AuthGuard, RolesGuard],
 })
 export class AuthModule {}
