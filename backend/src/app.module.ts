@@ -5,6 +5,7 @@ import { PrismaModule } from './prisma/prisma.module';
 import { AuthModule } from './auth/auth.module';
 import { EmployeesModule } from './employees/employees.module';
 import { LeaveTypesModule } from './leave-types/leave-types.module';
+import { LeaveBalancesModule } from './leave-balances/leave-balances.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { LeaveTypesModule } from './leave-types/leave-types.module';
     AuthModule,
     EmployeesModule,
     LeaveTypesModule,
+    LeaveBalancesModule,
   ],
 })
 export class AppModule {}
