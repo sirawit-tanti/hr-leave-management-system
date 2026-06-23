@@ -155,5 +155,29 @@ export class LeaveBalancesService {
 
     const currentTotalDays = Number(leaveBalance.totalDays.toString());
     const currentUsedDays = Number(leaveBalance.usedDays.toString());
+
+    const totalDays = updateLeaveBalanceDto.totalDays ?? currentTotalDays;
+    const usedDays = updateLeaveBalanceDto.usedDays ?? currentUsedDays;
+    const remainingDays = updateLeaveBalanceDto.remainingDays ?? totalDays - usedDays;
+
+    if (usedDays > totalDays) {
+      throw new BadRequestException('Used days cannot exceed total days');
+    }
+
+    if (remainingDays < 0) {
+      throw new BadRequestException('Remaining days cannot be negative');
+    }
+
+    return this.prisma.leaveBalance.update({
+      where: {
+        id,
+      },
+      data: {
+        totalDays: totalDays.toString(),
+        usedDays: usedDays.toString(),
+        remainingDays: remainingDays.toString(),
+      },
+      include: leaveBalanceInclude,
+    });
   }
 }
