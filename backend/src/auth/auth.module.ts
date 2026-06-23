@@ -5,6 +5,7 @@ import type { JwtModuleOptions } from '@nestjs/jwt';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { AuthGuard } from './guards/auth.guard';
+import { RolesGuard } from './guards/roles.guard';
 
 type JwtSignOptions = NonNullable<JwtModuleOptions['signOptions']>;
 
@@ -26,7 +27,7 @@ type JwtSignOptions = NonNullable<JwtModuleOptions['signOptions']>;
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, AuthGuard],
-  exports: [AuthGuard],
+  providers: [AuthService, AuthGuard, RolesGuard],
+  exports: [AuthGuard, RolesGuard],
 })
 export class AuthModule {}
