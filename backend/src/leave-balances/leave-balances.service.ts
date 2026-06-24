@@ -16,7 +16,7 @@ const leaveBalanceInclude = {
       employeeCode: true,
       firstName: true,
       lastName: true,
-      posision: true,
+      position: true,
       department: true,
       managerId: true,
     },
@@ -158,7 +158,8 @@ export class LeaveBalancesService {
 
     const totalDays = updateLeaveBalanceDto.totalDays ?? currentTotalDays;
     const usedDays = updateLeaveBalanceDto.usedDays ?? currentUsedDays;
-    const remainingDays = updateLeaveBalanceDto.remainingDays ?? totalDays - usedDays;
+    const remainingDays =
+      updateLeaveBalanceDto.remainingDays ?? totalDays - usedDays;
 
     if (usedDays > totalDays) {
       throw new BadRequestException('Used days cannot exceed total days');
