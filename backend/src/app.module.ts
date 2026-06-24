@@ -9,6 +9,7 @@ import { LeaveBalancesModule } from './leave-balances/leave-balances.module';
 import { LeaveRequestsModule } from './leave-requests/leave-requests.module';
 import { ApprovalsModule } from './approvals/approvals.module';
 import { DashboardModule } from './dashboard/dashboard.module';
+import { CalendarModule } from './calendar/calendar.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { DashboardModule } from './dashboard/dashboard.module';
     LeaveRequestsModule,
     ApprovalsModule,
     DashboardModule,
+    CalendarModule,
   ],
 })
 export class AppModule {}
