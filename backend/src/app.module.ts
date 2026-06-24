@@ -10,6 +10,7 @@ import { LeaveRequestsModule } from './leave-requests/leave-requests.module';
 import { ApprovalsModule } from './approvals/approvals.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { CalendarModule } from './calendar/calendar.module';
+import { ReportsModule } from './reports/reports.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { CalendarModule } from './calendar/calendar.module';
     ApprovalsModule,
     DashboardModule,
     CalendarModule,
+    ReportsModule,
   ],
 })
 export class AppModule {}

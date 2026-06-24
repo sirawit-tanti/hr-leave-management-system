@@ -3,7 +3,8 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { LeaveRequestStatus, Prisma, Role } from '../generated/prisma/client';
+import type { Prisma } from '../generated/prisma/client';
+import { LeaveRequestStatus, Role } from '../generated/prisma/client';
 import type { AuthUser } from '../auth/types/auth-user.type';
 import { PrismaService } from '../prisma/prisma.service';
 import { CalendarQueryDto } from './dto/calendar-query.dto';
