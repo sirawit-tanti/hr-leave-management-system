@@ -7,6 +7,7 @@ import { EmployeesModule } from './employees/employees.module';
 import { LeaveTypesModule } from './leave-types/leave-types.module';
 import { LeaveBalancesModule } from './leave-balances/leave-balances.module';
 import { LeaveRequestsModule } from './leave-requests/leave-requests.module';
+import { ApprovalsModule } from './approvals/approvals.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { LeaveRequestsModule } from './leave-requests/leave-requests.module';
     LeaveTypesModule,
     LeaveBalancesModule,
     LeaveRequestsModule,
+    ApprovalsModule,
   ],
 })
 export class AppModule {}
