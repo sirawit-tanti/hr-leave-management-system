@@ -33,6 +33,7 @@ export type ApprovalAction = {
 
 export type LeaveRequest = {
   id: string;
+  employeeProfileId?: string;
   startDate: string;
   endDate: string;
   totalDays: number | string;
@@ -47,7 +48,7 @@ export type LeaveRequest = {
   approvalActions?: ApprovalAction[];
 };
 
-export type LeaveRequestsFormValues = {
+export type LeaveRequestFormValues = {
   leaveTypeId: string;
   startDate: string;
   endDate: string;
