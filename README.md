@@ -15,6 +15,20 @@ Users can log in with different roles:
 
 Each role has different permissions and views.
 
+## Live Demo
+
+Frontend Application:
+
+https://hr-leave-management-system-livid.vercel.app
+
+Backend API:
+
+https://hr-leave-management-system-production.up.railway.app/api
+
+Health Check:
+
+https://hr-leave-management-system-production.up.railway.app/api/health
+
 ## Project Highlights
 
 - Full-stack TypeScript application
