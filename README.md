@@ -42,6 +42,14 @@ https://hr-leave-management-system-production.up.railway.app/api/health
 - Mobile-friendly sidebar layout
 - PostgreSQL database with Prisma ORM
 
+## Portfolio Summary
+
+HR Leave Management System is a full-stack web application designed to manage employee leave requests in an organization.
+
+The application includes authentication, role-based access control, employee profiles, leave balances, leave request CRUD, manager approval workflow, calendar view, reports, CSV export, and admin user management.
+
+This project demonstrates the ability to build a real-world business workflow using a modern full-stack TypeScript stack, including NestJS, Next.js, Prisma, PostgreSQL, JWT authentication, and protected frontend routes.
+
 ## Tech Stack
 
 ### Backend
@@ -200,10 +208,6 @@ hr-leave-management-system/
 
 ## Demo Accounts
 
-Admin:
-
-[admin@example.com](mailto:admin@example.com) / password123
-
 Manager:
 
 [manager@example.com](mailto:manager@example.com) / password123
@@ -211,6 +215,8 @@ Manager:
 Employee:
 
 [employee@example.com](mailto:employee@example.com) / password123
+
+Admin account is available upon request because it can modify demo data.
 
 ## Local Development Setup
 
