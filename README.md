@@ -15,6 +15,19 @@ Users can log in with different roles:
 
 Each role has different permissions and views.
 
+## Project Highlights
+
+- Full-stack TypeScript application
+- Real-world HR leave workflow
+- JWT authentication
+- Role-based access control
+- Manager approval workflow
+- Leave balance deduction after approval
+- Admin user management
+- CSV export report
+- Mobile-friendly sidebar layout
+- PostgreSQL database with Prisma ORM
+
 ## Tech Stack
 
 ### Backend
@@ -262,17 +275,33 @@ Safe example files:
 
 ## Screenshots
 
-Screenshots can be added here after deployment or final UI polish.
+### Login
 
-Suggested screenshots:
+![Login](docs/screenshots/login.png)
 
-- Login page
-- Dashboard
-- Leave Requests
-- Approvals
-- Calendar
-- Reports
-- Admin User Management
+### Dashboard
+
+![Dashboard](docs/screenshots/dashboard.png)
+
+### Leave Requests
+
+![Leave Requests](docs/screenshots/leave-requests.png)
+
+### Approvals
+
+![Approvals](docs/screenshots/approvals.png)
+
+### Calendar
+
+![Calendar](docs/screenshots/calendar.png)
+
+### Reports
+
+![Reports](docs/screenshots/reports.png)
+
+### Admin User Management
+
+![Admin User Management](docs/screenshots/admin-users.png)
 
 ## Deployment Notes
 
