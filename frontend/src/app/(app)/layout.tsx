@@ -30,7 +30,7 @@ const routeAccessRules: RouteAccessRule[] = [
     roles: ["ADMIN", "MANAGER"],
   },
   {
-    path: "calendar",
+    path: "/calendar",
     roles: ["ADMIN", "MANAGER", "EMPLOYEE"],
   },
   {
@@ -49,6 +49,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
 
   const [user, setUser] = useState<AuthUser | null>(null);
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
+  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
 
   useEffect(() => {
     const authUser = getAuthUser();
@@ -69,6 +70,10 @@ export default function AppLayout({ children }: AppLayoutProps) {
     setIsCheckingAuth(false);
   }, [pathname, router]);
 
+  useEffect(() => {
+    setIsMobileSidebarOpen(false);
+  }, [pathname]);
+
   if (isCheckingAuth || !user) {
     return (
       <main className="flex min-h-screen items-center justify-center bg-slate-100">
@@ -79,12 +84,35 @@ export default function AppLayout({ children }: AppLayoutProps) {
 
   return (
     <div className="min-h-screen bg-slate-100">
+      {isMobileSidebarOpen ? (
+        <div className="fixed inset-0 z-50 lg:hidden">
+          <button
+            type="button"
+            className="absolute inset-0 bg-slate-900/40"
+            onClick={() => setIsMobileSidebarOpen(false)}
+            aria-label="Close menu"
+          />
+
+          <div className="relative h-full w-72 max-w-[85vw] bg-white shadow-xl">
+            <AppSidebar
+              user={user}
+              className="h-full w-full border-r border-slate-200 bg-white"
+              onNavigate={() => setIsMobileSidebarOpen(false)}
+            />
+          </div>
+        </div>
+      ) : null}
+
       <div className="flex min-h-screen">
         <AppSidebar user={user} />
-        <div className="flex min-w-0 flex-1 flex-col">
-          <AppHeader user={user} />
 
-          <main className="flex-1 px-6 py-8">{children}</main>
+        <div className="flex min-w-0 flex-1 flex-col">
+          <AppHeader
+            user={user}
+            onOpenSidebar={() => setIsMobileSidebarOpen(true)}
+          />
+
+          <main className="flex-1 px-4 py-6 sm:px-6 lg:py-8">{children}</main>
         </div>
       </div>
     </div>

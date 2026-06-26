@@ -45,9 +45,11 @@ const navItems: NavItem[] = [
 
 type AppSidebarProps = {
   user: AuthUser;
+  className?: string;
+  onNavigate?: () => void;
 };
 
-export function AppSidebar({ user }: AppSidebarProps) {
+export function AppSidebar({ user, className, onNavigate }: AppSidebarProps) {
   const pathname = usePathname();
 
   const visibleNavItems = navItems.filter((item) =>
@@ -55,9 +57,14 @@ export function AppSidebar({ user }: AppSidebarProps) {
   );
 
   return (
-    <aside className="hidden min-h-screen w-64 border-r border-slate-200 bg-white lg:block">
+    <aside
+      className={
+        className ??
+        "hidden min-h-screen w-64 border-r border-slate-200 bg-white lg:block"
+      }
+    >
       <div className="border-b border-slate-200 px-6 py-5">
-        <p className="text-sm font-meduim text-slate-500">HR Leave</p>
+        <p className="text-sm font-medium text-slate-500">HR Leave</p>
         <h1 className="mt-1 text-lg font-bold text-slate-900">Management</h1>
       </div>
 
@@ -70,6 +77,7 @@ export function AppSidebar({ user }: AppSidebarProps) {
             <Link
               key={item.href}
               href={item.href}
+              onClick={onNavigate}
               className={[
                 "block rounded-lg px-4 py-3 text-sm font-medium transition",
                 isActive
