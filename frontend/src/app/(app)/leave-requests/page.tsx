@@ -145,17 +145,24 @@ export default function LeaveRequestsPage() {
     setSuccessMessage("");
 
     try {
-      await apiRequest<LeaveRequest>(`/leave-requests/${leaveRequest.id}/cancel`, {
-        method: 'PATCH',
-        body: {
-          comment: comment || undefined,
-        }
-      });
+      await apiRequest<LeaveRequest>(
+        `/leave-requests/${leaveRequest.id}/cancel`,
+        {
+          method: "PATCH",
+          body: {
+            comment: comment || undefined,
+          },
+        },
+      );
 
-      setSuccessMessage('Leave request has been cancelled successfully.');
+      setSuccessMessage("Leave request has been cancelled successfully.");
       await loadInitialData();
     } catch (error) {
-      setError(error instanceof Error ? error.message : 'Failed to cancel leave request');
+      setError(
+        error instanceof Error
+          ? error.message
+          : "Failed to cancel leave request",
+      );
     }
   }
 
@@ -165,11 +172,9 @@ export default function LeaveRequestsPage() {
   }
 
   function canManageRequest(leaveRequest: LeaveRequest) {
-    const requestEmployeeProfileId =
-    leaveRequest.employeeProfileId ?? leaveRequest.employeeProfile.id;
-
     return (
-      leaveRequest.status === 'PENDING' && user?.employeeProfileId === requestEmployeeProfileId
+      leaveRequest.status === "PENDING" &&
+      user?.employeeProfileId === leaveRequest.employeeProfile.id
     );
   }
 
@@ -181,14 +186,16 @@ export default function LeaveRequestsPage() {
     <div>
       <div className="mb-6">
         <p className="text-sm font-medium text-slate-500">Leave</p>
-        <h1 className="mt-1 text-2xl font-bold text-slate-900">Leave Requests</h1>
+        <h1 className="mt-1 text-2xl font-bold text-slate-900">
+          Leave Requests
+        </h1>
       </div>
 
       <div className="grid gap-6 xl:grid-cols-[420px_1fr]">
         <section className="rounded-2xl bg-white p-6 shadow-sm">
           <div className="mb-5">
             <h2 className="text-lg font-semibold text-slate-900">
-              {editingRequestId ? 'Edit Leave Request' : 'Create Leave Request'}
+              {editingRequestId ? "Edit Leave Request" : "Create Leave Request"}
             </h2>
             <p className="mt-1 text-sm text-slate-500">
               Submit leave request for manager approval.
@@ -209,10 +216,21 @@ export default function LeaveRequestsPage() {
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label htmlFor="leaveTypeId" className="mb-2 block text-sm font-medium text-slate-700">
+              <label
+                htmlFor="leaveTypeId"
+                className="mb-2 block text-sm font-medium text-slate-700"
+              >
                 Leave Type
               </label>
-              <select id="leaveTypeId" value={formValues.leaveTypeId} onChange={(event) => handleChange('leaveTypeId', event.target.value)} className="w-full rounded-lg border border-slate-300 px-4 py-3 text-sm text-slate-900 outline-none focus:border-slate-900" required>
+              <select
+                id="leaveTypeId"
+                value={formValues.leaveTypeId}
+                onChange={(event) =>
+                  handleChange("leaveTypeId", event.target.value)
+                }
+                className="w-full rounded-lg border border-slate-300 px-4 py-3 text-sm text-slate-900 outline-none focus:border-slate-900"
+                required
+              >
                 <option value="">Select leave type</option>
                 {activeLeaveTypes.map((leaveType) => (
                   <option key={leaveType.id} value={leaveType.id}>
@@ -224,34 +242,80 @@ export default function LeaveRequestsPage() {
 
             <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-1">
               <div>
-                <label htmlFor="startDate" className="mb-2 block text-sm font-medium text-slate-700">
+                <label
+                  htmlFor="startDate"
+                  className="mb-2 block text-sm font-medium text-slate-700"
+                >
                   Start Date
                 </label>
-                <input id="startDate" type="date" value={formValues.startDate} onChange={(event) => handleChange('startDate', event.target.value)} className="w-full rounded-lg border border-slate-300 px-4 py-3 text-sm text-slate-900 outline-none focus:border-slate-900" required />
+                <input
+                  id="startDate"
+                  type="date"
+                  value={formValues.startDate}
+                  onChange={(event) =>
+                    handleChange("startDate", event.target.value)
+                  }
+                  className="w-full rounded-lg border border-slate-300 px-4 py-3 text-sm text-slate-900 outline-none focus:border-slate-900"
+                  required
+                />
               </div>
 
               <div>
-                <label htmlFor="endDate" className="mb-2 block text-sm font-medium text-slate-700">
+                <label
+                  htmlFor="endDate"
+                  className="mb-2 block text-sm font-medium text-slate-700"
+                >
                   End Date
                 </label>
-                <input id="endDate" type="date" value={formValues.endDate} onChange={(event) => handleChange('endDate', event.target.value)} className="w-full rounded-lg border border-slate-300 px-4 py-3 text-sm text-slate-900 outline-none focus:border-slate-900" required />
+                <input
+                  id="endDate"
+                  type="date"
+                  value={formValues.endDate}
+                  onChange={(event) =>
+                    handleChange("endDate", event.target.value)
+                  }
+                  className="w-full rounded-lg border border-slate-300 px-4 py-3 text-sm text-slate-900 outline-none focus:border-slate-900"
+                  required
+                />
               </div>
             </div>
 
             <div>
-              <label htmlFor="reason" className="mb-2 block text-sm font-medium text-slate-700">
+              <label
+                htmlFor="reason"
+                className="mb-2 block text-sm font-medium text-slate-700"
+              >
                 Reason
               </label>
-              <textarea id="reason" value={formValues.reason} onChange={(event) => handleChange('reason', event.target.value)} rows={4} className="w-full resize-none rounded-lg border border-slate-300 px-4 py-3 text-sm text-slate-900 outline-none focus:border-slate-900" placeholder="Reason for leave"/>
+              <textarea
+                id="reason"
+                value={formValues.reason}
+                onChange={(event) => handleChange("reason", event.target.value)}
+                rows={4}
+                className="w-full resize-none rounded-lg border border-slate-300 px-4 py-3 text-sm text-slate-900 outline-none focus:border-slate-900"
+                placeholder="Reason for leave"
+              />
             </div>
 
             <div className="flex gap-3">
-              <button type="submit" disabled={isSubmitting} className="rounded-lg bg-slate-900 px-4 py-3 text-sm font-semibold text-white hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-60">
-                {isSubmitting ? 'Saving...' : editingRequestId ? 'Update Request' : 'Create Request'}
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="rounded-lg bg-slate-900 px-4 py-3 text-sm font-semibold text-white hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                {isSubmitting
+                  ? "Saving..."
+                  : editingRequestId
+                    ? "Update Request"
+                    : "Create Request"}
               </button>
 
               {editingRequestId ? (
-                <button type="button" onClick={resetForm} className="rounded-lg border border-slate-300 px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50">
+                <button
+                  type="button"
+                  onClick={resetForm}
+                  className="rounded-lg border border-slate-300 px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50"
+                >
                   Cancel Edit
                 </button>
               ) : null}
@@ -271,9 +335,7 @@ export default function LeaveRequestsPage() {
 
           {leaveRequests.length === 0 ? (
             <div className="rounded-xl border border-dashed border-slate-300 p-6 text-center">
-              <p className="text-sm text-slate-500">
-                No leave requests found.
-              </p>
+              <p className="text-sm text-slate-500">No leave requests found.</p>
             </div>
           ) : (
             <div className="space-y-4">
@@ -282,7 +344,10 @@ export default function LeaveRequestsPage() {
                 const isManageable = canManageRequest(leaveRequest);
 
                 return (
-                  <article key={leaveRequest.id} className="rounded-xl border border-slate-200 p-4">
+                  <article
+                    key={leaveRequest.id}
+                    className="rounded-xl border border-slate-200 p-4"
+                  >
                     <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
                       <div>
                         <div className="flex flex-wrap items-center gap-2">
@@ -293,18 +358,26 @@ export default function LeaveRequestsPage() {
                         </div>
 
                         <p className="mt-1 text-sm text-slate-500">
-                          {leaveRequest.employeeProfile.employeeCode} ·{' '}
+                          {leaveRequest.employeeProfile.employeeCode} ·{" "}
                           {leaveRequest.employeeProfile.department}
                         </p>
                       </div>
 
                       {isManageable ? (
                         <div className="flex gap-2">
-                          <button type="button" onClick={() => startEdit(leaveRequest)} className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50">
+                          <button
+                            type="button"
+                            onClick={() => startEdit(leaveRequest)}
+                            className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
+                          >
                             Edit
                           </button>
 
-                          <button type="button" onClick={() => cancelLeaveRequest(leaveRequest)} className="rounded-lg border border-red-200 px-3 py-2 text-sm font-medium text-red-700 hover:bg-red-50">
+                          <button
+                            type="button"
+                            onClick={() => cancelLeaveRequest(leaveRequest)}
+                            className="rounded-lg border border-red-200 px-3 py-2 text-sm font-medium text-red-700 hover:bg-red-50"
+                          >
                             Cancel
                           </button>
                         </div>
@@ -312,9 +385,20 @@ export default function LeaveRequestsPage() {
                     </div>
 
                     <div className="mt-4 grid gap-3 md:grid-cols-3">
-                      <InfoBox label="Leave Type" value={leaveRequest.leaveType.name} />
-                      <InfoBox label="Period" value={`${formatDate(leaveRequest.startDate)} - ${formatDate(leaveRequest.endDate)}`} />
-                      <InfoBox label="Total Days" value={formatDays(leaveRequest.totalDays)} />
+                      <InfoBox
+                        label="Leave Type"
+                        value={leaveRequest.leaveType.name}
+                      />
+                      <InfoBox
+                        label="Period"
+                        value={`${formatDate(leaveRequest.startDate)} - ${formatDate(
+                          leaveRequest.endDate,
+                        )}`}
+                      />
+                      <InfoBox
+                        label="Total Days"
+                        value={formatDays(leaveRequest.totalDays)}
+                      />
                     </div>
 
                     {leaveRequest.reason ? (
@@ -339,7 +423,7 @@ export default function LeaveRequestsPage() {
   );
 }
 
-function InfoBox ({label, value}: {label: string; value: string}) {
+function InfoBox({ label, value }: { label: string; value: string }) {
   return (
     <div className="rounded-lg bg-slate-50 p-3">
       <p className="text-xs text-slate-500">{label}</p>
@@ -348,16 +432,21 @@ function InfoBox ({label, value}: {label: string; value: string}) {
   );
 }
 
-function StatusBadge ({status}: {status: string}) {
+function StatusBadge({ status }: { status: string }) {
   const classNameByStatus: Record<string, string> = {
-    PENDING: 'bg-amber-50 text-amber-700',
-    APPROVED: 'bg-emerald-50 text-emerald-700',
-    REJECTED: 'bg-red-50 text-red-700',
-    CANCELLED: 'bg-slate-100 text-slate-700',
+    PENDING: "bg-amber-50 text-amber-700",
+    APPROVED: "bg-emerald-50 text-emerald-700",
+    REJECTED: "bg-red-50 text-red-700",
+    CANCELLED: "bg-slate-100 text-slate-700",
   };
 
   return (
-    <span className={['rounded-full px-3 py-1 text-xs font-semibold', classNameByStatus[status] ?? 'bg-slate-100 text-slate-700',].join(' ')}>
+    <span
+      className={[
+        "rounded-full px-3 py-1 text-xs font-semibold",
+        classNameByStatus[status] ?? "bg-slate-100 text-slate-700",
+      ].join(" ")}
+    >
       {status}
     </span>
   );
