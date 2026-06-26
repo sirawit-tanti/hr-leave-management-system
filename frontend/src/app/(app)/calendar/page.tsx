@@ -63,21 +63,21 @@ export default function CalendarPage() {
     const currentMonthRange = getCurrentMonthRange();
 
     setFilters(currentMonthRange);
-    loadCalendarEvents(filters);
+    loadCalendarEvents(currentMonthRange);
   }
 
   function handleNextMonth() {
     const nextMonthRange = getNextMonthRange(filters.startDate);
 
     setFilters(nextMonthRange);
-    loadCalendarEvents(filters);
+    loadCalendarEvents(nextMonthRange);
   }
 
   function handlePreviousMonth() {
     const previousMonthRange = getPreviousMonthRange(filters.startDate);
 
     setFilters(previousMonthRange);
-    loadCalendarEvents(filters);
+    loadCalendarEvents(previousMonthRange);
   }
 
   const groupedEvents = useMemo(() => {
