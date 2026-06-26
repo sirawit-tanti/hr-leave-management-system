@@ -172,9 +172,12 @@ export default function LeaveRequestsPage() {
   }
 
   function canManageRequest(leaveRequest: LeaveRequest) {
+    const currentEmployeeProfileId =
+      user?.employeeProfileId ?? user?.employeeProfile?.id;
+
     return (
       leaveRequest.status === "PENDING" &&
-      user?.employeeProfileId === leaveRequest.employeeProfile.id
+      currentEmployeeProfileId === leaveRequest.employeeProfile.id
     );
   }
 
