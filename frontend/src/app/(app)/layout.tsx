@@ -1,9 +1,9 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { getAuthUser } from "@/lib/auth";
-import type { AuthUser } from "@/types/auth";
+import { usePathname, useRouter } from "next/navigation";
+import { getAuthUser, isRoleAllowed } from "@/lib/auth";
+import type { AuthUser, Role } from "@/types/auth";
 import { AppHeader } from "@/components/layout/AppHeader";
 import { AppSidebar } from "@/components/layout/AppSidebar";
 
@@ -11,8 +11,41 @@ type AppLayoutProps = {
   children: React.ReactNode;
 };
 
+type RouteAccessRule = {
+  path: string;
+  roles: Role[];
+};
+
+const routeAccessRules: RouteAccessRule[] = [
+  {
+    path: "/dashboard",
+    roles: ["ADMIN", "MANAGER", "EMPLOYEE"],
+  },
+  {
+    path: "/leave-requests",
+    roles: ["ADMIN", "MANAGER", "EMPLOYEE"],
+  },
+  {
+    path: "/approvals",
+    roles: ["ADMIN", "MANAGER"],
+  },
+  {
+    path: "calendar",
+    roles: ["ADMIN", "MANAGER", "EMPLOYEE"],
+  },
+  {
+    path: "/reports",
+    roles: ["ADMIN", "MANAGER"],
+  },
+  {
+    path: "/admin/users",
+    roles: ["ADMIN"],
+  },
+];
+
 export default function AppLayout({ children }: AppLayoutProps) {
   const router = useRouter();
+  const pathname = usePathname();
 
   const [user, setUser] = useState<AuthUser | null>(null);
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
@@ -25,9 +58,16 @@ export default function AppLayout({ children }: AppLayoutProps) {
       return;
     }
 
+    const allowedRoles = getAllowedRolesForPath(pathname);
+
+    if (allowedRoles && !isRoleAllowed(authUser.role, allowedRoles)) {
+      router.replace("/dashboard");
+      return;
+    }
+
     setUser(authUser);
     setIsCheckingAuth(false);
-  }, [router]);
+  }, [pathname, router]);
 
   if (isCheckingAuth || !user) {
     return (
@@ -49,4 +89,14 @@ export default function AppLayout({ children }: AppLayoutProps) {
       </div>
     </div>
   );
+}
+
+function getAllowedRolesForPath(pathname: string) {
+  const matchedRule = routeAccessRules
+    .sort((a, b) => b.path.length - a.path.length)
+    .find(
+      (rule) => pathname === rule.path || pathname.startsWith(`${rule.path}/`),
+    );
+
+  return matchedRule?.roles;
 }

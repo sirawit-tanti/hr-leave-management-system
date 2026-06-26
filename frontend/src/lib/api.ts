@@ -1,4 +1,4 @@
-import { getAccessToken } from "./auth";
+import { clearAuth, getAccessToken } from "./auth";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -37,9 +37,19 @@ export async function apiRequest<T>(
   if (!response.ok) {
     const errerBody = await response.json().catch(() => null);
 
-    throw new Error(
-      errerBody?.message || `Request failed with status ${response.status}`,
-    );
+    if (response.status === 401) {
+      clearAuth();
+    }
+
+    const message = Array.isArray(errerBody?.message)
+      ? errerBody.message.join(", ")
+      : errerBody?.message;
+
+    throw new Error(message || `Request failed with status ${response.status}`);
+  }
+
+  if (response.status === 204) {
+    return undefined as T;
   }
 
   return response.json() as Promise<T>;

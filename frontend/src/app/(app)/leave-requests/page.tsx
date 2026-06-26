@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import type { SubmitEvent } from "react";
 import { apiRequest } from "@/lib/api";
 import { formatDate, formatDays } from "@/lib/format";
-import { getAuthUser } from "@/lib/auth";
+import { getAuthUser, getCurrentEmployeeProfileId } from "@/lib/auth";
 import type { AuthUser } from "@/types/auth";
 import type {
   LeaveRequest,
@@ -173,8 +173,7 @@ export default function LeaveRequestsPage() {
   }
 
   function canManageRequest(leaveRequest: LeaveRequest) {
-    const currentEmployeeProfileId =
-      user?.employeeProfileId ?? user?.employeeProfile?.id;
+    const currentEmployeeProfileId = getCurrentEmployeeProfileId(user);
 
     return (
       leaveRequest.status === "PENDING" &&
