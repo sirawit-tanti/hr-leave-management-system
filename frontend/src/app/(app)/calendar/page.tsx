@@ -1,6 +1,7 @@
 "use client";
 
-import { FormEvent, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import type { SubmitEvent } from "react";
 import { apiRequest } from "@/lib/api";
 import { formatDate, formatDays } from "@/lib/format";
 import type { CalendarLeaveEvent, CalendarResponse } from "@/types/calendar";
@@ -54,7 +55,7 @@ export default function CalendarPage() {
     }
   }
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
     loadCalendarEvents(filters);
   }

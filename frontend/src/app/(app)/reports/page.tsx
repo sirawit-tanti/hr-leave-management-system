@@ -1,6 +1,7 @@
 "use client";
 
-import { FormEvent, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import type { SubmitEvent } from "react";
 import { apiRequest } from "@/lib/api";
 import { formatDate, formatDays, formatNumber } from "@/lib/format";
 import { getAccessToken } from "@/lib/auth";
@@ -59,7 +60,7 @@ export default function ReportsPage() {
     }
   }
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
     loadReports(filters);
   }

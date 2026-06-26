@@ -1,6 +1,7 @@
 "use client";
 
-import { FormEvent, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import type { SubmitEvent } from "react";
 import { apiRequest } from "@/lib/api";
 import { formatDate, formatDays } from "@/lib/format";
 import { getAuthUser } from "@/lib/auth";
@@ -71,7 +72,7 @@ export default function LeaveRequestsPage() {
     }));
   }
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
 
     setError("");
