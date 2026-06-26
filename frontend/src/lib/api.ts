@@ -39,6 +39,10 @@ export async function apiRequest<T>(
 
     if (response.status === 401) {
       clearAuth();
+
+      if (typeof window !== "undefined") {
+        window.location.href = "/login";
+      }
     }
 
     const message = Array.isArray(errerBody?.message)
