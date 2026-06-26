@@ -76,13 +76,21 @@ export default function DashboardPage() {
 
 function StatsGrid({ summary }: { summary: Record<string, number> }) {
   return (
-    <div className="grid gap-4 md:grid-cols-3">
+    <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
       {Object.entries(summary).map(([key, value]) => (
-        <div key={key} className="rounded-2xl bg-white pg-6 shadow-sm">
-          <p className="text-sm text-slate-500">{formatLabel(key)}</p>
-          <p className="mt-3 text-3xl font-bold text-slate-900">
-            {formatNumber(value)}
-          </p>
+        <div
+          key={key}
+          className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"
+        >
+          <div className="flex min-h-[96px] flex-col justify-between">
+            <p className="text-sm font-medium text-slate-500">
+              {formatLabel(key)}
+            </p>
+
+            <p className="text-3xl font-bold leading-none text-slate-900">
+              {formatNumber(value)}
+            </p>
+          </div>
         </div>
       ))}
     </div>
